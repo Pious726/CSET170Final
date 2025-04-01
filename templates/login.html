@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/styles/styles.css">
+    <title>OrbitCoin - Log in</title>
+</head>
+<body>
+    <div class="container">
+        <img class="register-img" src="/static/images/orbitLogo.png">
+        <h1 class="registerh1">Login</h1>
+    
+        {% if error %}
+            <h2>{{error}}</h2>
+        {% endif %}
+    
+        {% if success %}
+            <h2>{{success}}</h2>
+        {% endif %}
+    
+        <form class="register" action="/login.html" method="POST">
+            <input type="text" name="Username" placeholder="Username"><br>
+    
+            <input type="text" name="UserPassword" placeholder="Password"><br>
+    
+            <input type="submit" value="Submit" class="input_submit">
+        </form>
+    </div>
+</body>
+</html>

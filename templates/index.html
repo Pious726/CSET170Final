@@ -8,8 +8,8 @@
 </head>
 <body>
     <div class="container">
-        <img class="signup-img" src="/static/images/orbitLogo.png">
-        <h1 id="signuph1">Signup</h1>
+        <img class="register-img" src="/static/images/orbitLogo.png">
+        <h1 class="registerh1">Signup</h1>
     
         {% if error %}
             <h2>{{error}}</h2>
@@ -19,20 +19,20 @@
             <h2>{{success}}</h2>
         {% endif %}
     
-        <form id="signup" action="/" method="POST">
-            <input type="text" name="Fname" placeholder="First Name" class="input_field"><br>
+        <form class="register" action="/" method="POST">
+            <input type="text" name="Fname" placeholder="First Name"><br>
     
-            <input type="text" name="Lname" placeholder="Last Name" class="input_field"><br>
+            <input type="text" name="Lname" placeholder="Last Name"><br>
     
-            <input type="text" name="Username" placeholder="Username" class="input_field"><br>
+            <input type="text" name="Username" placeholder="Username"><br>
     
-            <input type="text" name="UserPassword" placeholder="Password" class="input_field"><br>
+            <input type="text" name="UserPassword" placeholder="Password"><br>
     
-            <input type="number" name="SSN" placeholder="Social Security" class="input_field"><br>
+            <input type="number" name="SSN" placeholder="Social Security"><br>
     
-            <input type="text" name="Address" placeholder="Address" class="input_field"><br>
+            <input type="text" name="Address" placeholder="Address"><br>
     
-            <input type="number" name="PhoneNum" placeholder="Phone Number" class="input_field"><br>
+            <input type="number" name="PhoneNum" placeholder="Phone Number"><br>
     
             <input type="submit" value="Submit" class="input_submit">
         </form>
