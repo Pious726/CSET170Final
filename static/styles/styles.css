@@ -78,3 +78,33 @@ footer {
     margin-top: auto;
     text-align: center;
 }
+
+#signup {
+    margin: 0 auto;
+    text-align: center;
+    border: 2px solid var(--secondaryColor);
+    padding: 50px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    
+    
+}
+
+.input_field {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px 80px 10px 5px;
+    border: 1px solid var(--secondaryColor);
+}
+
+#signuph1 {
+    margin-top: 100px;
+    font-size: 2.5em;
+    
+}
+
+.input_submit {
+    background-color: var(--secondaryColor);
+    padding: 10px 25px;
+    color: #fff;
+}
