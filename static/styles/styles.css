@@ -39,4 +39,26 @@ p {
     font-family: sans-serif;
 }
 
+/* Styles for header */
+header {
+    background-color: var(--secondaryColor);
+    color: #fff;
+    padding: 50px 0;
+}
+
 /* Styles for nav */
+.navlist li {
+    list-style-type: none;
+}
+.navlist a {
+    text-decoration: none;
+    color: #fff;
+}
+
+/* Styles for footer */
+footer {
+    background-color: var(--secondaryColor);
+    color: #fff;
+    padding: 50px 0;
+    text-align: center;
+}
