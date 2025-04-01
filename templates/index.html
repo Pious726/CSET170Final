@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<h1>Signup</h1>
+
+<form action="/signup" method="POST">
+    <input type="text" name="Fname" placeholder="First Name" class="input_field"><br>
+
+    <input type="text" name="Lname" placeholder="Last Name" class="input_field"><br>
+
+    <input type="text" name="UserName" placeholder="Username" class="input_field"><br>
+
+    <input type="text" name="Password" placeholder="Password" class="input_field"><br>
+
+    <input type="number" name="SSN" placeholder="Social Security" class="input_field"><br>
+
+    <input type="text" name="Address" placeholder="Address" class="input_field"><br>
+
+    <input type="number" name="Phone" placeholder="Phone Number" class="input_field"><br>
+    
+    <input type="submit" value="Submit" class="input_submit">
+</form>
+
+
+{% endblock %}
