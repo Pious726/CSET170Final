@@ -13,7 +13,7 @@ def loadapp():
 @app.route('/', methods=["POST"])
 def signup():
     try:
-        conn.execute(text('insert into users(Username, Fname, Lname, SSN, Address, UserPassword) values(:Username, :Fname, :Lname, :SSN, :Address, :UserPassword)'), request.form)
+        conn.execute(text('insert into users(Username, Fname, Lname, SSN, Address, PhoneNum, UserPassword) values(:Username, :Fname, :Lname, :SSN, :Address, :PhoneNum, :UserPassword)'), request.form)
         return render_template('index.html', error = None, success="Account Created! Pending Admin Review..")
     except:
         return render_template('index.html', error = "Failed", success = None)
