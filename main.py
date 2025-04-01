@@ -16,12 +16,9 @@ def signup():
         with engine.begin() as conn: 
             conn.execute(text('insert into users(Username, Fname, Lname, SSN, Address, PhoneNum, UserPassword) values(:Username, :Fname, :Lname, :SSN, :Address, :PhoneNum, :UserPassword)'), request.form)
         return render_template('index.html', success="Account Created! Pending Admin Review...", error=None)
-
     except Exception as e:
         print("Error:", e)
         return render_template('index.html', error = "Failed", success = None)
-    
-
 
 @app.route('/login.html', methods=["GET"])
 def getlogins():
