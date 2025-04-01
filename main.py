@@ -6,13 +6,29 @@ conn_str = "mysql://root:cset155@localhost/bank"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
-@app.route('/')
+@app.route('/', methods=["GET"])
 def loadapp():
     return render_template('index.html')
 
-@app.route('/login.html')
+@app.route('/', methods=["POST"])
+def signup():
+    try:
+        conn.execute(text('insert into users(Username, Fname, Lname, SSN, Address, UserPassword) values(:Username, :Fname, :Lname, :SSN, :Address, :UserPassword)'), request.form)
+        return render_template('index.html', error = None, success="Account Created! Pending Admin Review..")
+    except:
+        return render_template('index.html', error = "Failed", success = None)
+
+@app.route('/login.html', methods=["GET"])
 def getlogins():
     return render_template('login.html')
+
+@app.route('/login.html', methods=["POST"])
+def login():
+    return render_template('login.html')
+
+@app.route('/admin.html')
+def authorizeAccounts():
+    return render_template('admin.html')
 
 @app.route('/home.html')
 def home():
@@ -33,10 +49,6 @@ def deposit():
 @app.route('/transfer.html')
 def transfer():
     return render_template('transfer.html')
-
-@app.route('/admin.html')
-def authorizeAccounts():
-    return render_template('admin.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
