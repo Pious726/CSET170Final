@@ -15,9 +15,8 @@ def signup():
     try:
         conn.execute(text('insert into users(Username, Fname, Lname, SSN, Address, PhoneNum, UserPassword) values(:Username, :Fname, :Lname, :SSN, :Address, :PhoneNum, :UserPassword)'), request.form)
         conn.commit()
-        return render_template('index.html', success="Account Created! Pending Admin Review...", error=None)
-    except Exception as e:
-        print("Error:", e)
+        return render_template('login.html', success="Account Created! Pending Admin Review...", error=None)
+    except:
         return render_template('index.html', error = "Failed", success = None)
 
 @app.route('/login.html', methods=["GET"])
@@ -26,7 +25,19 @@ def getlogins():
 
 @app.route('/login.html', methods=["POST"])
 def login():
-    return render_template('login.html')
+    try:
+        username = request.form.get("Username")
+        password = request.form.get("UserPassword")
+        login_query = conn.execute(text('select Userpassword from users where Username = :username'), {"username": username}).scalar()
+        is_valid_account = conn.execute(text('select IsValid from users where Username = :username'), {"username": username}).scalar()
+        
+        if is_valid_account == 1:
+            if login_query and password == login_query:
+                return render_template('home.html')
+        else:
+            return render_template('login.html', error='Not valid account.', success=None)
+    except:
+        return render_template('login.html', error='Incorrect username or password.', success=None)
 
 @app.route('/admin.html')
 def authorizeAccounts():
