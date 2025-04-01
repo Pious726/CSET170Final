@@ -26,6 +26,7 @@ html, body {
     max-width: 1400px;
     width: 80%;
     margin: 0 auto;
+    background-color: rgba(15, 12, 29, .2);
 }
 h1 {
     text-align: center;
@@ -57,14 +58,22 @@ header {
 }
 .navlist a {
     text-decoration: none;
-    color: #fff;
+    font-family: "Outfit", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: .8em;
+    color: var(--gold);
 }
 
 /* Styles for footer */
 footer {
     background-color: var(--secondaryColor);
-    color: #fff;
-    padding: 50px 0;
+    color: var(--gold);
+    font-family: "Outfit", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: .7em;
+    padding: 30px 0;
     width: 100%;
     margin-top: auto;
     text-align: center;
