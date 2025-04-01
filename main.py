@@ -8,7 +8,7 @@ conn = engine.connect()
 
 @app.route('/')
 def loadapp():
-    return render_template('base.html')
+    return render_template('index.html')
 
 @app.route('/login.html')
 def getlogins():
