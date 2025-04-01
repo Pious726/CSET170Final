@@ -7,7 +7,10 @@
     box-sizing: border-box;
 }
 :root {
-    
+   --backgroundColor: #F9F9F9;
+   --secondaryColor: #0F0C1D;
+   --cyan: #246A73;
+   --gold: #FFD700;
 }
 html {
     background-color: var(--backgroundColor);
