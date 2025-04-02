@@ -21,6 +21,8 @@ def signup():
 
 @app.route('/login.html', methods=["GET"])
 def getlogins():
+    conn.execute(text('update users set IsLoggedIn = 0 where IsLoggedIn = 1'))
+    conn.commit()
     return render_template('login.html')
 
 @app.route('/login.html', methods=["POST"])
@@ -77,12 +79,13 @@ def admin_action():
 
 @app.route('/home.html')
 def home():
-    username = conn.execute(text('select Username from users where IsLoggedIn = 1'))
+    username = conn.execute(text('select Username from users where IsLoggedIn = 1')).scalar()
     return render_template('home.html', username=username)
 
 @app.route('/account.html')
 def seeAccount():
-    account = conn.execute("select * from users where IsLoggedIn = 1")
+    account = conn.execute(text("select * from users where IsLoggedIn = 1")).fetchone()
+    print(account)
     return render_template('account.html', account=account)
 
 @app.route('/deposit.html')
