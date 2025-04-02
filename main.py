@@ -57,7 +57,7 @@ def authorizeAccounts():
 
 @app.route('/home.html')
 def home():
-    username = conn.execute(text('select Username from users where IsLoggedIn = 1'))
+    username = conn.execute(text('select Username from users where IsLoggedIn = 1')).scalar()
     return render_template('home.html', username=username)
 
 @app.route('/account.html')
