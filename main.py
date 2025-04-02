@@ -28,18 +28,32 @@ def login():
     try:
         username = request.form.get("Username")
         password = request.form.get("UserPassword")
-        login_query = conn.execute(text('select Userpassword from users where Username = :username'), {"username": username}).scalar()
-        is_valid_account = conn.execute(text('select ApprovedStatus from users where Username = :username'), {"username": username}).scalar()
+        login_query = conn.execute(text('select Userpassword from users where Username = :username'), {'username': username}).scalar()
+        is_valid_account = conn.execute(text('select ApprovedStatus from users where Username = :username'), {'username': username}).scalar()
+        print(username)
+        print(password)
+        print(login_query)
+        print(is_valid_account)
         
         if is_valid_account == 1:
+<<<<<<< HEAD
             if login_query and password == login_query:
+=======
+            if login_query == password:
+>>>>>>> 0d47d7c526944ade564e8684d2f529f9c0d47c29
                 conn.execute(text("update users set IsLoggedIn = 1 where Username = :username"), {"username": username})
                 conn.commit()
-                return render_template('home.html')
+                return redirect(url_for('home'))
         else:
             return render_template('login.html', error='Not valid account.', success=None)
     except:
         return render_template('login.html', error='Incorrect username or password.', success=None)
+
+@app.route('/logout')
+def logout():
+    conn.execute(text('update users set IsLoggedIn = 0 where IsLoggedIn = 1'))
+    conn.commit()
+    return redirect('/login.html')
 
 @app.route('/admin.html')
 def authorizeAccounts():
