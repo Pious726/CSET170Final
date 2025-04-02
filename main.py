@@ -47,16 +47,13 @@ def authorizeAccounts():
 
 @app.route('/home.html')
 def home():
-    username = conn.execute(text('select Username from accounts where IsLoggedIn = 1'))
+    username = conn.execute(text('select Username from users where IsLoggedIn = 1'))
     return render_template('home.html', username=username)
 
-@app.route('/account.html', methods=["GET"])
-def getAccounts():
-    return render_template('account.html')
-
-@app.route('/account.html', methods=["POST"])
+@app.route('/account.html')
 def seeAccount():
-    return render_template('account.html')
+    account = conn.execute("select * from users where IsLoggedIn = 1")
+    return render_template('account.html', account=account)
 
 @app.route('/deposit.html')
 def deposit():

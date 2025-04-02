@@ -1,4 +1,16 @@
 {% extends 'base.html' %}
-{% block body%}
-
+{% block body %}
+    <div class="container">
+        <h1>My Account</h1>
+        <div class="account_details">
+            <ul>
+                <li>Username: {{username.Username}}</li>
+                <li>First Name: {{username.Fname}}</li>
+                <li>Last Name: {{username.Lname}}</li>
+                <li>SSN: {{username.SSN }}</li>
+                <li>Address: {{username.Address}}</li>
+                <li>Phone Number: {{username.PhoneNum}}</li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}
