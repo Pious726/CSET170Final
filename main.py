@@ -55,7 +55,27 @@ def logout():
 
 @app.route('/admin.html')
 def authorizeAccounts():
-    return render_template('admin.html')
+    with engine.connect() as conn:
+        accounts = conn.execute(
+            text('SELECT UserID, Username, Fname, Lname, SSN, Address FROM users WHERE ApprovedStatus = 0')
+        ).fetchall()
+    
+    return render_template('admin.html', accounts=accounts)
+
+@app.route('/admin_action', methods=['POST'])
+def admin_action():
+    user_id = request.form.get('user_id')
+    action = request.form.get('action')
+
+    with engine.connect() as conn:
+        if action == 'approve':
+            conn.execute(
+                text('UPDATE users SET ApprovedStatus = 1 WHERE UserID = :user_id'),
+                {"user_id": user_id}
+            )
+        conn.commit()
+    
+    return redirect(url_for('authorizeAccounts'))
 
 @app.route('/home.html')
 def home():
