@@ -70,9 +70,9 @@ def admin_action():
     with engine.connect() as conn:
         if action == 'approve':
             conn.execute(
-                text('UPDATE users SET ApprovedStatus = 1 WHERE UserID = :user_id'),
-                {"user_id": user_id}
-            )
+                text('UPDATE users SET ApprovedStatus = 1 WHERE UserID = :user_id'),{"user_id": user_id})
+        elif action == 'deny':
+            conn.execute(text('DELETE FROM users WHERE UserID = :user_id'),{"user_id": user_id})
         conn.commit()
     
     return redirect(url_for('authorizeAccounts'))
