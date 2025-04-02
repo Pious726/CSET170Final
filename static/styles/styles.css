@@ -82,19 +82,19 @@ footer {
 }
 
 /* Styles for signup/login */
-#signup {
+.register{
     margin: 50px auto;
     text-align: center;
     border: 2px solid var(--secondaryColor);
     padding: 50px;
 }
-.input_field {
+.register input {
     margin-top: 10px;
     margin-bottom: 10px;
     padding: 10px 80px 10px 5px;
     border: 1px solid var(--secondaryColor);
 }
-#signuph1 {
+.registerh1 {
     font-size: 2.5em;
 }
 .input_submit {
@@ -102,6 +102,6 @@ footer {
     padding: 10px 25px;
     color: #fff;
 }
-.signup-img {
+.register-img {
     width: 50%;
 }
