@@ -33,6 +33,8 @@ def login():
         
         if is_valid_account == 1:
             if login_query and password == login_query:
+                conn.execute(text("update table users set IsLoggedIn = 1 where Username = :username"), {"username": username})
+                conn.commit()
                 return render_template('home.html')
         else:
             return render_template('login.html', error='Not valid account.', success=None)
@@ -45,7 +47,8 @@ def authorizeAccounts():
 
 @app.route('/home.html')
 def home():
-    return render_template('home.html')
+    username = conn.execute(text('select Username from accounts where IsLoggedIn = 1'))
+    return render_template('home.html', username=username)
 
 @app.route('/account.html', methods=["GET"])
 def getAccounts():
