@@ -29,7 +29,7 @@ def login():
         username = request.form.get("Username")
         password = request.form.get("UserPassword")
         login_query = conn.execute(text('select Userpassword from users where Username = :username'), {"username": username}).scalar()
-        is_valid_account = conn.execute(text('select IsValid from users where Username = :username'), {"username": username}).scalar()
+        is_valid_account = conn.execute(text('select ApprovedStatus from users where Username = :username'), {"username": username}).scalar()
         
         if is_valid_account == 1:
             if login_query and password == login_query:

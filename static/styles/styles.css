@@ -88,7 +88,7 @@ footer {
     border: 2px solid var(--secondaryColor);
     padding: 50px;
 }
-.register input {
+.register_input {
     margin-top: 10px;
     margin-bottom: 10px;
     padding: 10px 80px 10px 5px;
@@ -97,11 +97,24 @@ footer {
 .registerh1 {
     font-size: 2.5em;
 }
+
 .input_submit {
     background-color: var(--secondaryColor);
     padding: 10px 25px;
     color: #fff;
+    text-align: center;
+    font-size: .8em;
 }
 .register-img {
     width: 50%;
+}
+
+.login-btn {
+    background-color: var(--secondaryColor);
+    padding: 10px 25px;
+    color: #fff;
+    text-align: center;
+    font-size: .87em;
+    text-decoration: none;
+   
 }
