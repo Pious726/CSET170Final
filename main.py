@@ -33,7 +33,7 @@ def login():
         
         if is_valid_account == 1:
             if login_query and password == login_query:
-                conn.execute(text("update table users set IsLoggedIn = 1 where Username = :username"), {"username": username})
+                conn.execute(text("update users set IsLoggedIn = 1 where Username = :username"), {"username": username})
                 conn.commit()
                 return render_template('home.html')
         else:
