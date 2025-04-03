@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, url_for, redirect
 from sqlalchemy import create_engine, text
+import random
  
 app = Flask(__name__)
 conn_str = "mysql://root:cset155@localhost/bank"
@@ -68,12 +69,31 @@ def admin_action():
     action = request.form.get('action')
 
     with engine.connect() as conn:
-        if action == 'approve':
-            conn.execute(
-                text('UPDATE users SET ApprovedStatus = 1 WHERE UserID = :user_id'),{"user_id": user_id})
-        elif action == 'deny':
-            conn.execute(text('DELETE FROM users WHERE UserID = :user_id'),{"user_id": user_id})
-        conn.commit()
+        try:
+            if action == 'approve':
+                
+                conn.execute(
+                    text('UPDATE users SET ApprovedStatus = 1 WHERE UserID = :user_id'),
+                    {"user_id": user_id}
+                )
+                
+                conn.execute(
+                    text('INSERT INTO bankAccounts (userID, BankAccountID) '
+                         'VALUES (:user_id, :bank_id)'),
+                    {"user_id": user_id, 
+                     "bank_id": random.randint(100000, 999999)}
+                )
+                
+            elif action == 'deny':
+                conn.execute(
+                    text('DELETE FROM users WHERE UserID = :user_id'),
+                    {"user_id": user_id}
+                )
+            
+            conn.commit()
+            
+        except:
+            conn.rollback()
     
     return redirect(url_for('authorizeAccounts'))
 
@@ -96,6 +116,21 @@ def deposit():
 def transfer():
     return render_template('transfer.html')
 
+@app.route('/Create_Bankaccount/<int:user_id>')
+def Create_bankAccount(user_id):
+    with engine.connect() as conn:
+
+        if conn.execute(text("Select AppprovedStatus From users Where userID = :id"),{"id": user_id}).scalar() != 1:
+            return "User not approved", 400
+        
+        bank_id = random.randint(100000, 999999)
+        conn.execute(
+            text("INSERT INTO bankAccounts (userID, BankAccountID) VALUES (:user_id, :bank_id)"),
+            {"user_id": user_id, "bank_id": bank_id})
+        conn.commit()
+        
+        return f"Created bank account with ID: {bank_id}", 200
+
+
 if __name__ == '__main__':
     app.run(debug=True)
-
