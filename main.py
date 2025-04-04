@@ -110,10 +110,23 @@ def seeAccount():
     print(account)
     return render_template('account.html', account=account)
 
-@app.route('/deposit.html')
-def deposit():
-    
+@app.route('/deposit.html', methods=["GET"])
+def getDeposit():
     return render_template('deposit.html')
+
+@app.route('/deposit.html', methods=["POST"])
+def deposit():
+    try:
+        userID = conn.execute(text('select userID from users where IsLoggedIn = 1')).scalar()
+        accountNum = conn.execute(text(f'select accountNum from bankAccounts where userID = :userID'), {"userID": userID}).scalar()
+        amount = request.form.get("amount")
+
+        conn.execute(text('update bankAccounts set balance = balance + :amount where accountNum = :accountNum'), {"accountNum": accountNum, "amount": amount})
+        conn.commit()
+
+        return render_template('deposit.html', error = None, success = "Successfully deposited into your account!")
+    except:
+        return render_template('deposit.html', error = "Failed to deposit.", success = None)
 
 @app.route('/transfer.html')
 def transfer():

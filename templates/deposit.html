@@ -2,6 +2,15 @@
 {% block body %}
     <div class="container">
         <h1>Make a deposit</h1>
+
+        {% if error %}
+            <h2>{{error}}</h2>
+        {% endif %}
+    
+        {% if success %}
+            <h2>{{success}}</h2>
+        {% endif %}
+
         <form action="/deposit.html" method="POST">
             <div class="card_info">
                 <label for="cardNumber">Card Number*:</label>
@@ -18,6 +27,8 @@
                 <label for="amount">Amount to deposit*:</label>
                 <input type="num" name="amount" id="amount" placeholder="$0000.00" required>
             </div>
+
+            <button type="submit">Submit</button>
         </form>
     </div>
 {% endblock %}
