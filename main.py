@@ -58,7 +58,6 @@ def authorizeAccounts():
         ).fetchall()
     
     return render_template('admin.html', accounts=accounts)
-
 @app.route('/admin_action', methods=['POST'])
 def admin_action():
     user_id = request.form.get('user_id')
@@ -67,17 +66,23 @@ def admin_action():
     with engine.connect() as conn:
         try:
             if action == 'approve':
-                
+    
                 conn.execute(
                     text('UPDATE users SET ApprovedStatus = 1 WHERE UserID = :user_id'),
                     {"user_id": user_id}
                 )
+
+                bank_id = random.randint(100000, 999999)
+                while conn.execute(
+                    text('SELECT 1 FROM bankAccounts WHERE accountNum = :id'),
+                    {"id": bank_id}
+                ).scalar():
+                    bank_id = random.randint(100000, 999999)
                 
                 conn.execute(
                     text('INSERT INTO bankAccounts (userID, accountNum) '
                          'VALUES (:user_id, :bank_id)'),
-                    {"user_id": user_id, 
-                     "bank_id": random.randint(100000, 999999)}
+                    {"user_id": user_id, "bank_id": bank_id}
                 )
                 
             elif action == 'deny':
@@ -112,22 +117,6 @@ def deposit():
 @app.route('/transfer.html')
 def transfer():
     return render_template('transfer.html')
-
-@app.route('/Create_Bankaccount/<int:user_id>')
-def Create_bankAccount(user_id):
-    with engine.connect() as conn:
-
-        if conn.execute(text("Select AppprovedStatus From users Where userID = :id"),{"id": user_id}).scalar() != 1:
-            return "User not approved", 400
-        
-        bank_id = random.randint(100000, 999999)
-        conn.execute(
-            text("INSERT INTO bankAccounts (userID, accountNum) VALUES (:user_id, :bank_id)"),
-            {"user_id": user_id, "bank_id": bank_id})
-        conn.commit()
-        
-        return f"Created bank account with ID: {bank_id}", 200
-
 
 if __name__ == '__main__':
     app.run(debug=True)
