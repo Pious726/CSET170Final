@@ -119,14 +119,16 @@ def home():
 
 @app.route('/account.html')
 def seeAccount():
+    IsAdmin = conn.execute(text('select IsAdmin from users where IsLoggedIn = 1')).scalar()
     account = conn.execute(text("select * from users where IsLoggedIn = 1")).fetchone()
     userID = conn.execute(text('select userID from users where IsLoggedIn = 1')).scalar()
     bankAccount = conn.execute(text('select * from bankAccounts where userID = :userID'), {"userID": userID}).fetchone()
-    return render_template('account.html', account=account, bankAccount = bankAccount)
+    return render_template('account.html', account=account, bankAccount = bankAccount, IsAdmin=IsAdmin)
 
 @app.route('/deposit.html', methods=["GET"])
 def getDeposit():
-    return render_template('deposit.html')
+    IsAdmin = conn.execute(text('select IsAdmin from users where IsLoggedIn = 1')).scalar()
+    return render_template('deposit.html', IsAdmin=IsAdmin)
 
 @app.route('/deposit.html', methods=["POST"])
 def deposit():
@@ -145,7 +147,8 @@ def deposit():
 @app.route('/transfers.html', methods=["GET", "POST"])
 def transfers():
     if request.method == "GET":
-        return render_template('transfers.html')
+        IsAdmin = conn.execute(text('select IsAdmin from users where IsLoggedIn = 1')).scalar()
+        return render_template('transfers.html', IsAdmin=IsAdmin)
     
     try:
         userID = conn.execute(text('SELECT userID FROM users WHERE IsLoggedIn = 1')).scalar()
