@@ -1,6 +1,17 @@
 {% extends 'base.html' %}
 {% block body %}
-    <div class="container">
-        <h1>Money Transfer</h1>
-    </div>
+<div class="container">
+    <h1>Send Money</h1>
+    <form method="POST">
+        <label>To Account:
+            <input type="number" name="recipient_account" required>
+        </label>
+        <label>Amount:
+            <input type="number" name="amount" step="0.01" min="0.01" required>
+        </label>
+        <button type="submit">Send</button>
+        {% if error %}<p>{{ error }}</p>{% endif %}
+        {% if success %}<p>{{ success }}</p>{% endif %}
+    </form>
+</div>
 {% endblock %}
