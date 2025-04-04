@@ -107,8 +107,9 @@ def home():
 @app.route('/account.html')
 def seeAccount():
     account = conn.execute(text("select * from users where IsLoggedIn = 1")).fetchone()
-    print(account)
-    return render_template('account.html', account=account)
+    userID = conn.execute(text('select userID from users where IsLoggedIn = 1')).scalar()
+    bankAccount = conn.execute(text('select * from bankAccounts where userID = :userID'), {"userID": userID}).fetchone()
+    return render_template('account.html', account=account, bankAccount = bankAccount)
 
 @app.route('/deposit.html', methods=["GET"])
 def getDeposit():
