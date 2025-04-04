@@ -106,6 +106,7 @@ def seeAccount():
 
 @app.route('/deposit.html')
 def deposit():
+    
     return render_template('deposit.html')
 
 @app.route('/transfer.html')

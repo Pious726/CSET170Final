@@ -3,17 +3,21 @@
     <div class="container">
         <h1>Make a deposit</h1>
         <form action="/deposit.html" method="POST">
-            <label for="cardNumber">Card Number*:</label>
-            <input type="tel" name="cardNumber" id="cardNumber" placeholder="1234123412341234" maxlength="16" required><br>
+            <div class="card_info">
+                <label for="cardNumber">Card Number*:</label>
+                <input type="tel" name="cardNumber" id="cardNumber" placeholder="1234 1234 1234 1234" maxlength="16" required><br>
 
-            <label for="expirationDate">Exp. Date*:</label>
-            <input type="date" name="expirationDate" id="expirationDate" placeholder="Expiration Date" required><br>
+                <label for="expirationDate">Exp. Date*:</label>
+                <input type="date" name="expirationDate" id="expirationDate" placeholder="Expiration Date" required><br>
 
-            <label for="CCV">CCV Number*:</label>
-            <input type="text" name="CCV" id="CCV" placeholder="123" maxlength="3" required><br>
-
-            <label for="amount">Amount to deposit*:</label>
-            <input type="num" name="amount" id="amount" placeholder="$0000.00" required>
+                <label for="CCV">CCV Number*:</label>
+                <input type="text" name="CCV" id="CCV" placeholder="123" maxlength="3" required><br>
+            </div>
+            
+            <div class="bank_account_info">
+                <label for="amount">Amount to deposit*:</label>
+                <input type="num" name="amount" id="amount" placeholder="$0000.00" required>
+            </div>
         </form>
     </div>
 {% endblock %}
