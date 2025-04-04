@@ -74,7 +74,7 @@ def admin_action():
                 )
                 
                 conn.execute(
-                    text('INSERT INTO bankAccounts (userID, BankAccountID) '
+                    text('INSERT INTO bankAccounts (userID, accountNum) '
                          'VALUES (:user_id, :bank_id)'),
                     {"user_id": user_id, 
                      "bank_id": random.randint(100000, 999999)}
@@ -121,7 +121,7 @@ def Create_bankAccount(user_id):
         
         bank_id = random.randint(100000, 999999)
         conn.execute(
-            text("INSERT INTO bankAccounts (userID, BankAccountID) VALUES (:user_id, :bank_id)"),
+            text("INSERT INTO bankAccounts (userID, accountNum) VALUES (:user_id, :bank_id)"),
             {"user_id": user_id, "bank_id": bank_id})
         conn.commit()
         
