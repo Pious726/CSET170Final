@@ -140,6 +140,7 @@ def deposit():
         return render_template('deposit.html', error = None, success = "Successfully deposited into your account!")
     except:
         return render_template('deposit.html', error = "Failed to deposit.", success = None)
+    
 @app.route('/transfers.html', methods=["GET", "POST"])
 def transfers():
     if request.method == "GET":
