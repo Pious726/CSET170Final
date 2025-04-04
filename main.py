@@ -115,8 +115,10 @@ def deposit():
     
     return render_template('deposit.html')
 
-@app.route('/transfer.html')
+@app.route('/transfer.html' methods=['POST'])
 def transfer():
+    sender_id = request.form.get('sender_id')
+    recipient = request.form.get('recipient')
     return render_template('transfer.html')
 
 if __name__ == '__main__':
