@@ -114,7 +114,8 @@ def admin_action():
 @app.route('/home.html')
 def home():
     username = conn.execute(text('select Username from users where IsLoggedIn = 1')).scalar()
-    return render_template('home.html', username=username)
+    IsAdmin = conn.execute(text('select IsAdmin from users where IsLoggedIn = 1')).scalar()
+    return render_template('home.html', username=username, IsAdmin=IsAdmin)
 
 @app.route('/account.html')
 def seeAccount():
