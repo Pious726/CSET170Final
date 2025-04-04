@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, url_for, redirect
 from sqlalchemy import create_engine, text
 import random
+import bcrypt
  
 app = Flask(__name__)
 conn_str = "mysql://root:cset155@localhost/bank"
@@ -14,7 +15,11 @@ def loadapp():
 @app.route('/', methods=["POST"])
 def signup():
     try:
-        conn.execute(text('insert into users(Username, Fname, Lname, SSN, Address, PhoneNum, UserPassword) values(:Username, :Fname, :Lname, :SSN, :Address, :PhoneNum, :UserPassword)'), request.form)
+        signupData = dict(request.form)
+        hashed_password = bcrypt.hashpw(signupData["UserPassword"].encode('utf-8'), bcrypt.gensalt())
+        signupData["UserPassword"] = hashed_password
+
+        conn.execute(text('insert into users(Username, Fname, Lname, SSN, Address, PhoneNum, UserPassword) values(:Username, :Fname, :Lname, :SSN, :Address, :PhoneNum, :UserPassword)'), signupData)
         conn.commit()
         return render_template('login.html', success="Account Created! Pending Admin Review...", error=None)
     except:
@@ -30,19 +35,21 @@ def getlogins():
 def login():
     try:
         username = request.form.get("Username")
-        password = request.form.get("UserPassword")
+        password = request.form.get("UserPassword").encode('utf-8')
         login_query = conn.execute(text('select Userpassword from users where Username = :username'), {'username': username}).scalar()
         is_valid_account = conn.execute(text('select ApprovedStatus from users where Username = :username'), {'username': username}).scalar()
         
         if is_valid_account == 1:
-            if login_query == password:
+            if login_query == bcrypt.checkpw(password, login_query.econde('utf-8')):
                 conn.execute(text("update users set IsLoggedIn = 1 where Username = :username"), {"username": username})
                 conn.commit()
                 return redirect(url_for('home'))
+            else:
+                return render_template('login.html', error='Incorrect username or password.', success=None)
         else:
             return render_template('login.html', error='Not valid account.', success=None)
     except:
-        return render_template('login.html', error='Incorrect username or password.', success=None)
+        return render_template('login.html', error='Login Error.', success=None)
 
 @app.route('/logout')
 def logout():

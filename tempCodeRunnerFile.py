@@ -1,1 +1,1 @@
-me.html', username=username)
+ conn.execute(text('select IsAdmin from users where User
