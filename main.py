@@ -146,7 +146,6 @@ def transfers():
         return render_template('transfers.html')
     
     try:
-  
         userID = conn.execute(text('SELECT userID FROM users WHERE IsLoggedIn = 1')).scalar()
         sender_account, sender_balance = conn.execute(
             text('SELECT accountNum, balance FROM bankAccounts WHERE userID = :userID'),
