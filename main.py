@@ -58,6 +58,7 @@ def authorizeAccounts():
         ).fetchall()
     
     return render_template('admin.html', accounts=accounts)
+
 @app.route('/admin_action', methods=['POST'])
 def admin_action():
     user_id = request.form.get('user_id')
