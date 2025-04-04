@@ -127,32 +127,43 @@ def deposit():
         return render_template('deposit.html', error = None, success = "Successfully deposited into your account!")
     except:
         return render_template('deposit.html', error = "Failed to deposit.", success = None)
-
-@app.route('/transfer.html')
-def transfer():
+@app.route('/transfers.html', methods=["GET", "POST"])
+def transfers():
+    if request.method == "GET":
+        return render_template('transfers.html')
+    
     try:
-        userID = conn.execute(text('Select userID From users Where IsLoggedIn = 1')).scalar()
-        sender = conn.execute(text('Select accountNum balance From bankAccounts Where userID = :userID'),{"userID": userID}).fetchone()
+  
+        userID = conn.execute(text('SELECT userID FROM users WHERE IsLoggedIn = 1')).scalar()
+        sender_account, sender_balance = conn.execute(
+            text('SELECT accountNum, balance FROM bankAccounts WHERE userID = :userID'),
+            {"userID": userID}
+        ).fetchone()
 
         recipient = request.form.get("recipient_account")
         amount = float(request.form.get("amount"))
 
-        if sender.balance < amount:
-            return render_template('transfer.html', error="You broke cuz, you don't got the funds for that")
-        if not conn.execute(text('Select 1 From bankAccounts where accountNum = :acc'),{"acc": recipient}).scalar():
-            return render_template('transfer.html', error = "Account not found")
-        
-        conn.execute(text('Update bankAccounts Set balance = balance - :amt Where accontNum = :acc'),{"amt": amount, "acc": sender.accountNum})
+        if sender_balance < amount:
+            return render_template('transfers.html', error="Not enough funds")
+        if not conn.execute(text('SELECT 1 FROM bankAccounts WHERE accountNum = :acc'), 
+                         {"acc": recipient}).scalar():
+            return render_template('transfers.html', error="Account doesn't exist")
 
-        conn.execute(text('Update bankAccounts Set balance = balance + :amt Where accountNum = :acc'),{"amt": amount, "acc": recipient})
+        conn.execute(
+            text('UPDATE bankAccounts SET balance = balance - :amt WHERE accountNum = :acc'),
+            {"amt": amount, "acc": sender_account}
+        )
+        conn.execute(
+            text('UPDATE bankAccounts SET balance = balance + :amt WHERE accountNum = :acc'),
+            {"amt": amount, "acc": recipient}
+        )
         conn.commit()
 
-        return render_template('transfer.html', success="transfer succesful!")
-
+        return render_template('transfers.html', success="Money sent!")
+    
     except:
         conn.rollback()
-        return render_template('transfer.html', error="Transfer failed")
-
-
+        return render_template('transfers.html', error="Transfer failed")
+    
 if __name__ == '__main__':
     app.run(debug=True)
