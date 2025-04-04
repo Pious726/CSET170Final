@@ -36,11 +36,16 @@ def login():
     try:
         username = request.form.get("Username")
         password = request.form.get("UserPassword").encode('utf-8')
-        login_query = conn.execute(text('select Userpassword from users where Username = :username'), {'username': username}).scalar()
+        print(password)
+
+        login_query = conn.execute(text('select UserPassword from users where Username = :username'), {'username': username}).scalar()
+
         is_valid_account = conn.execute(text('select ApprovedStatus from users where Username = :username'), {'username': username}).scalar()
         
-        if is_valid_account == 1:
-            if login_query == bcrypt.checkpw(password, login_query.econde('utf-8')):
+        if is_valid_account == 1 and login_query:
+            stored_hash = login_query.encode('utf-8')
+
+            if bcrypt.checkpw(password, stored_hash):
                 conn.execute(text("update users set IsLoggedIn = 1 where Username = :username"), {"username": username})
                 conn.commit()
                 return redirect(url_for('home'))
@@ -150,7 +155,7 @@ def transfer():
         if not conn.execute(text('Select 1 From bankAccounts where accountNum = :acc'),{"acc": recipient}).scalar():
             return render_template('transfer.html', error = "Account not found")
         
-        conn.execute(text('Update bankAccounts Set balance = balance - :amt Where accontNum = :acc'),{"amt": amount, "acc": sender.accountNum})
+        conn.execute(text('Update bankAccounts Set balance = balance - :amt Where accountNum = :acc'),{"amt": amount, "acc": sender.accountNum})
 
         conn.execute(text('Update bankAccounts Set balance = balance + :amt Where accountNum = :acc'),{"amt": amount, "acc": recipient})
         conn.commit()
