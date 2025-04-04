@@ -110,16 +110,49 @@ def seeAccount():
     print(account)
     return render_template('account.html', account=account)
 
-@app.route('/deposit.html')
-def deposit():
-    
+@app.route('/deposit.html', methods=["GET"])
+def getDeposit():
     return render_template('deposit.html')
 
-@app.route('/transfer.html' methods=['POST'])
+@app.route('/deposit.html', methods=["POST"])
+def deposit():
+    try:
+        userID = conn.execute(text('select userID from users where IsLoggedIn = 1')).scalar()
+        accountNum = conn.execute(text(f'select accountNum from bankAccounts where userID = :userID'), {"userID": userID}).scalar()
+        amount = request.form.get("amount")
+
+        conn.execute(text('update bankAccounts set balance = balance + :amount where accountNum = :accountNum'), {"accountNum": accountNum, "amount": amount})
+        conn.commit()
+
+        return render_template('deposit.html', error = None, success = "Successfully deposited into your account!")
+    except:
+        return render_template('deposit.html', error = "Failed to deposit.", success = None)
+
+@app.route('/transfer.html')
 def transfer():
-    sender_id = request.form.get('sender_id')
-    recipient = request.form.get('recipient')
-    return render_template('transfer.html')
+    try:
+        userID = conn.execute(text('Select userID From users Where IsLoggedIn = 1')).scalar()
+        sender = conn.execute(text('Select accountNum balance From bankAccounts Where userID = :userID'),{"userID": userID}).fetchone()
+
+        recipient = request.form.get("recipient_account")
+        amount = float(request.form.get("amount"))
+
+        if sender.balance < amount:
+            return render_template('transfer.html', error="You broke cuz, you don't got the funds for that")
+        if not conn.execute(text('Select 1 From bankAccounts where accountNum = :acc'),{"acc": recipient}).scalar():
+            return render_template('transfer.html', error = "Account not found")
+        
+        conn.execute(text('Update bankAccounts Set balance = balance - :amt Where accontNum = :acc'),{"amt": amount, "acc": sender.accountNum})
+
+        conn.execute(text('Update bankAccounts Set balance = balance + :amt Where accountNum = :acc'),{"amt": amount, "acc": recipient})
+        conn.commit()
+
+        return render_template('transfer.html', success="transfer succesful!")
+
+    except:
+        conn.rollback()
+        return render_template('transfer.html', error="Transfer failed")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
