@@ -22,8 +22,8 @@
                     <li><a href="admin.html">VERIFY ACCOUNTS</a></li>
                 {% endif %}
             </ul>
+            <a href="{{ url_for('logout')}}" class="logout-btn">Log Out</a>
         </nav>
-        <a href="{{ url_for('logout')}}">Log Out</a>
     </header>
     
     {% block body %}
