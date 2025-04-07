@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="container">
+        <h1>My Account</h1>
+        <div class="account_details">
+            <ul>
+                <li>Username: {{account[1]}}</li>
+                <li>First Name: {{account[2]}}</li>
+                <li>Last Name: {{account[3]}}</li>
+                <li>SSN: {{account[4]}}</li>
+                <li>Address: {{account[5]}}</li>
+                <li>Phone Number: {{account[6]}}</li>
+                <li>Account Number: {{bankAccount[1]}}</li>
+                <li>Balance: ${{bankAccount[2]}}</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
