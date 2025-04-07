@@ -129,5 +129,22 @@ footer {
     text-align: center;
     font-size: .87em;
     text-decoration: none;
-   
+}
+
+/* Styles for accounts page */
+.account_details {
+    background-color: var(--secondaryColor);
+    color: var(--gold);
+    border-radius: .5em;
+    max-width: 50%;
+    margin: 10px auto 0 auto;
+    padding: 10px;
+    text-align: center;
+}
+.account_details li {
+    list-style-type: none;
+    font-family: "Outfit", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 1em;
 }
