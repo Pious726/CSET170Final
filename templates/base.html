@@ -14,11 +14,10 @@
         <nav class="navbar">
             <ul class="navlist">
                 <li><a href="home.html">HOME</a></li>
-                {% if IsAdmin == 0 %}
                     <li><a href="account.html">MY ACCOUNT</a></li>
                     <li><a href="deposit.html">DEPOSIT</a></li>
                     <li><a href="transfers.html">TRANSFERS</a></li>
-                {% elif IsAdmin == 1 %}
+                {% if IsAdmin == 1 %}
                     <li><a href="admin.html">VERIFY ACCOUNTS</a></li>
                 {% endif %}
             </ul>
